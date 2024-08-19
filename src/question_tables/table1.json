@@ -1,0 +1,93 @@
+{
+    "subjects": [
+        {
+            "subject": "環境要因",
+            "triggers": [
+                {
+                    "trigger": "まぶしい光",
+                    "priority": 100,
+                    "questions": [
+                        {
+                            "question": "まぶしい光を感じるような出来事はありましたか？",
+                            "answer_format": "selective",
+                            "answer_type": "str", 
+                            "answers": [
+                                "はい",
+                                "いいえ"
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "trigger": "騒音・高い音",
+                    "priority": 80,
+                    "questions": [
+                        {
+                            "question": "騒音や高い音を感じる出来事はありましたか？",
+                            "answer_format": "selective",
+                            "answer_type": "str",
+                            "answers": [
+                                "はい",
+                                "いいえ"
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "trigger": "強い匂い",
+                    "priority": 90,
+                    "questions": [
+                        {
+                            "question": "強い匂いを感じることがありましたか？",
+                            "answer_format": "selective",
+                            "answer_type": "str",
+                            "answers": [
+                                "はい",
+                                "いいえ"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "trigger": "熱いお湯に入浴",
+                    "priority": 30,
+                    "questions": [
+                        {
+                            "question": "熱いお湯に入浴しましたか？",
+                            "answer_format": "selective",
+                            "answer_type": "str",
+                            "answers": [
+                                "はい",
+                                "いいえ"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "trigger": "人混み",
+                    "priority": 70,
+                    "questions": [
+                        {
+                            "question": "人混みの中にいることがありましたか？",
+                            "answer_format": "selective",
+                            "answer_type": "str",
+                            "answers": [
+                                "はい",
+                                "いいえ"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "questions": [
+                {
+                    "question": "環境による刺激を感じる出来事はありましたか？",
+                    "answer_format": "selective",
+                    "answer_type": "str",
+                    "answers": [],
+                    "priority": null
+                }
+            ]
+        }
+    ]
+}
