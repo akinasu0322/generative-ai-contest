@@ -1,13 +1,33 @@
 # generative-ai-contest
-### アプリケーションサーバーとパソコンを繋げる
-```bash
+### プロダクションションサーバーとパソコンを繋げる
+####流れ
+- 
+```bash(on local)
 # sshキーの作成
-# サーバー側で
 ssh-keygen -t ed25519 -C "your_email@example.com"
+# パブリックキーの確認
+cat ~/.ssh/id_ed25519.pub
 ```
-### アプリケーションサーバーとgitを繋げる
-### gitクローンの仕方
-```bash
+```bash(on server)
+# パブリックキーをサーバーに登録（管理者側の操作）
+cd ~/.ssh/
+echo "your_public_key" >> authorized_keys
+```
+```bash(on local)
+# 接続の確認
+ssh -i ~/.ssh/id_ed25519 ec2-user@server_ip_address
+```
+### プロダクションサーバーとgitを繋げる
+```bash(on server)
+# sshキーの作成
+ssh-keygen -t ed25519 -C "your_email@example.com"
+# パブリックキーの確認
+cat ~/.ssh/id_ed25519.pub
+```
+githubの「アカウント」->「settings」->「SSH and GPG keys」->「New SSH key」からパブリックキーを登録
+
+### プロダクションサーバー上でのgitクローンの仕方
+```bash(on server)
 # 
 ```
 ### Dockerの立ち上げ方
