@@ -37,6 +37,15 @@ githubの「アカウント」->「settings」->「SSH and GPG keys」->「New S
 # 
 ```
 ### Dockerの立ち上げ方
+#### Dockerのインストール方法
+```bash
+sudo dnf install docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo docker run hello-world
+sudo usermod -aG docker $USER
+newgrp docker
+```
 #### DockerfileからDockerイメージを作成
 ```bash
 # dockerファイルのあるディレクトリで
