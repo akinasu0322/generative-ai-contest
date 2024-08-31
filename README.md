@@ -77,6 +77,19 @@ docker rm container_ID
 ```bash
 # MySQLのAPTリポジトリのダウンロード
 wget https://dev.mysql.com/get/mysql-apt-config_0.8.32-1_all.deb
-# ダウンロードしたAPTリポジトリから
+# パッケージのダウンロードに必要な依存パッケージ"lsb-release"のインストール
+apt-get update
+apt-get install -y lsb-release
+# ダウンロードしたAPTリポジトリからパッケージをダウンロード
 dpkg -i mysql-apt-config_0.8.32-1_all.deb
+## 1. MySQL Server & Cluster (Currently selected: mysql-8.4-lts)
+## 6. mysql-cluster-8.4-lts
+## 3. OK
+# MySQLサーバーとクライアントのインストール
+apt-get update
+apt-get install -y mysql-server mysql-client
+## Enter root password: {hoge}
+# MySQLのインストールが完了したか確認
+mysql -V
+## mysql  Ver 8.4.2-cluster for Linux on x86_64 (MySQL Cluster Community Server - GPL)
 ```
