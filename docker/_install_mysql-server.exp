@@ -1,0 +1,34 @@
+#!/usr/bin/expect -f
+
+# .envファイルの読み込み
+set env_file [open ".env"]
+set env_content [read $env_file]
+close $env_file
+
+# DB_PASS_KEYの値を取得
+set db_pass_key ""
+foreach line [split $env_content "\n"] {
+    if {[regexp {^DB_PASS_KEY=(.*)} $line match pass]} {
+        set db_pass_key $pass
+    }
+}
+
+# パスワードが設定されているか確認
+if {$db_pass_key == ""} {
+    puts "DB_PASS_KEY is not set in the .env file."
+    exit 1
+}
+
+# apt-get install mysql-server の実行
+spawn sudo apt-get install -y mysql-server
+
+# パスワードプロンプトが表示されたら、DB_PASS_KEYを入力
+expect "Enter root password: "
+send "$db_pass_key\r"
+
+# パスワード確認のプロンプトにも同じパスワードを入力
+expect "Re-enter root password: "
+send "$db_pass_key\r"
+
+# インストールが完了するまで待機
+expect eof

@@ -1,0 +1,6 @@
+# mysql-apt-config
+mysql-apt-config mysql-apt-config/select-server select mysql-cluster-8.4-lts
+mysql-apt-config mysql-apt-config/select-product select Ok
+
+# mysql-server
+mysql-server mysql-server-config/password password ""

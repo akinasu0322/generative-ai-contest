@@ -1,0 +1,21 @@
+#!/usr/bin/expect -f
+
+# タイムアウトを設定
+set timeout -1
+
+# dpkgコマンドを実行
+spawn dpkg -i mysql-apt-config_0.8.32-1_all.deb
+
+# MySQLサーバーバージョン選択の対話
+expect "Which MySQL product do you wish to configure?"
+send "1\r"  ;# MySQL Server & Cluster を選択
+
+expect "Which server version do you wish to receive?"
+send "6\r"  ;# mysql-cluster-8.4-lts を選択
+
+# 設定の確認
+expect "Select \"Ok\" to save the configuration"
+send "3\r"  ;# Ok を選択
+
+# コマンドの終了を待つ
+expect eof
