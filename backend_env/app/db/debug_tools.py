@@ -1,6 +1,5 @@
 import os
-import mysql.connector
-from App.DB.db_tools import get_db_cursor
+from app.db.db_tools import get_db_cursor
 import csv
 
 
@@ -16,7 +15,9 @@ def export_tables_to_tsv():
         cursor.execute("SHOW TABLES")
         tables = cursor.fetchall()
 
-        for (table_name,) in tables:
+
+        for table_dict in tables:
+            table_name = list(table_dict.values())[0]
             cursor.execute(f"SELECT * FROM {table_name}")
             rows = cursor.fetchall()
             columns = [desc[0] for desc in cursor.description]

@@ -1,0 +1,34 @@
+services:
+  frontend:
+    build:
+      context: ./frontend_env
+      dockerfile: ./docker/Dockerfile
+    container_name: frontend-container
+    image: frontend_image:latest
+    ports:
+      - "3000:3000"  # フロントエンドアプリが3000番ポートで動作する場合
+    env_file:
+      - ./.env
+      - ./envs/backend.env
+    environment:
+      - FRONTEND_ENV=development  # フロントエンドで必要な環境変数を指定
+    volumes:
+      - ./frontend_env:/frontend  # ローカルのコードをコンテナ内と同期
+    depends_on:
+      - backend  # フロントエンドはバックエンドに依存
+
+  backend:
+    build:
+      context: ./backend_env
+      dockerfile: ./docker/Dockerfile
+    container_name: backend-container
+    image: backend_image:latest
+    ports:
+      - "5000:5000"  # バックエンドアプリが5000番ポートで動作する場合
+    env_file:
+      - ./.env
+      - ./envs/backend.env
+    environment:
+      - BACKEND_ENV=development  # バックエンドで必要な環境変数を指定
+    volumes:
+      - ./backend_env:/backend  # ローカルのコードをコンテナ内と同期

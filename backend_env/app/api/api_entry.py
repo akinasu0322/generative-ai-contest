@@ -7,7 +7,7 @@ import pytz
 import os
 from functools import wraps
 from ulid import ULID
-from App.DB.db_tools import get_db_connection, get_db_cursor
+from app.db.db_tools import get_db_connection, get_db_cursor
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "Gen-ai-contest-password"
@@ -60,7 +60,6 @@ def token_required(f):
 
         try:
             token = token.split(" ")[1]  # "Bearer <token>" の形式を想定
-            print(token)
             data = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])
             current_user = data["user_id"]
         except Exception as e:

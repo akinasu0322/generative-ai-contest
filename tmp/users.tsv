@@ -1,2 +1,0 @@
-user_id	email	name	hashed_password	age	sex	hospital_id	doctor_id
-01J6Y8FSPKQTWTYJ88MGZEDJHE	hoge1@mail.com	Doctor1	scrypt:32768:8:1$6n0xYGMJyfOa0F2e$43469ceed6a7f87b7e2c7b75df7a77d869437499444facb5beeee35b888cef9da63af30c821fdd98ab7bffac5b7fef6afc8f5971414642a0d69c0f6d4dc26ebe				
