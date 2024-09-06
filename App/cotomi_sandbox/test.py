@@ -61,9 +61,12 @@ if __name__ == "__main__":
     # 誘発要因リスト: まぶしい光, 騒音, 強い匂い, 熱いお湯に入浴, 人混み
     # 日記: 今日は、朝から仕事に出かけました。通勤直後とても頭が痛くなり、上司にお願いして午前で上がらせてもらいました。家に帰ると何も父親が料理をしており、さらに症状がひどくなりました。
     # """
-    user_content = "関ヶ原の戦いで勝利したのは誰ですか？"
-    system_content = "私はAIアシスタントです。"
-    user_content = "関ヶ原の戦いで勝利したのは誰ですか？"
+    # user_content = "関ヶ原の戦いで勝利したのは誰ですか？"
+    # system_content = "私はAIアシスタントです。"
+    # user_content = "関ヶ原の戦いで勝利したのは誰ですか？"
+    user_content = ""
+    system_content = "あなたは最新のAIです。"
+    user_content = ""
 
     res1 = normal_chat(user_content=user_content, system_content=system_content)
     print(res1.status_code)

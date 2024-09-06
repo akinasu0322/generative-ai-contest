@@ -1,10 +1,8 @@
 import mysql.connector
 import os
-from dotenv import load_dotenv
 
 # データベース接続の取得
 def get_db_connection():
-    load_dotenv()
     connection = mysql.connector.connect(
         host=os.getenv("RDS_END_POINT"),
         user=os.getenv("RDS_USER"),
@@ -27,7 +25,8 @@ def create_user_table():
             age INT,
             sex ENUM('male', 'female', 'other'),
             hospital_id VARCHAR(26),
-            doctor_id VARCHAR(26)
+            doctor_id VARCHAR(26),
+            created_time VARCHAR(13)
         )
     """)
     connection.commit()
@@ -109,7 +108,6 @@ def create_record_table():
             record_id VARCHAR(26) PRIMARY KEY,
             user_id VARCHAR(26),
             date VARCHAR(13)
-            -- 他の誘発因子カラムをここに追加
         )
     """)
     connection.commit()
@@ -126,13 +124,45 @@ def create_chat_log_table():
             log_order INT,
             role ENUM("user", "assistant", "system"),
             text VARCHAR(2048),
-            user_id VARCHAR(26)
+            user_id VARCHAR(26),
+            created_time VARCHAR(13)
         )
     """)
     connection.commit()
     cursor.close()
     connection.close()
 
+def create_question_log_table():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("DROP TABLE IF EXISTS questions")
+    cursor.execute("""
+        CREATE TABLE questions (
+            question_id VARCHAR(26) PRIMARY KEY,
+            question TEXT,
+            answer TEXT,
+            destination_trigger VARCHAR(255),
+            created_time VARCHAR(13)
+        )
+    """)
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+def create_summary_table():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("DROP TABLE IF EXISTS summaries")
+    cursor.execute("""
+        CREATE TABLE summaries (
+            summary_id VARCHAR(26) PRIMARY KEY,
+            summary TEXT,
+            created_time VARCHAR(13)
+        )
+    """)
+    connection.commit()
+    cursor.close()
+    connection.close()
 
 # メイン関数
 if __name__ == "__main__":
@@ -143,4 +173,6 @@ if __name__ == "__main__":
     create_diary_table()
     create_record_table()
     create_chat_log_table()
+    create_question_log_table()
+    create_summary_table()
     print("Tables created successfully.")

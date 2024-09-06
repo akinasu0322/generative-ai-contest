@@ -1,2 +1,2 @@
 user_id	email	name	hashed_password	age	sex	hospital_id	doctor_id
-01J6XZDB1Z80BBXQ1RHC7G3PYP	hello@gmail.com	testuser	scrypt:32768:8:1$6aO6OSQpL60UTzIX$5351306f090f9641791974a126e36d1269594a236943ef4efc65f510c13c9713df3ac647d678d7d510a1a69f69c38fdbb0a0f410346c6d46568f0e64a35b7a6d				
+01J6Y8FSPKQTWTYJ88MGZEDJHE	hoge1@mail.com	Doctor1	scrypt:32768:8:1$6n0xYGMJyfOa0F2e$43469ceed6a7f87b7e2c7b75df7a77d869437499444facb5beeee35b888cef9da63af30c821fdd98ab7bffac5b7fef6afc8f5971414642a0d69c0f6d4dc26ebe				
