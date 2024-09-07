@@ -1,13 +1,11 @@
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-import mysql.connector
 import jwt
 from datetime import datetime, timedelta
 import pytz
-import os
 from functools import wraps
 from ulid import ULID
-from app.db.db_tools import get_db_connection, get_db_cursor
+from app.db.db_tools import get_db_cursor
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "Gen-ai-contest-password"
@@ -16,14 +14,12 @@ TIMEOUT_HOUR = 1
 
 
 # ユーザー認証
-def authenticate_user(username, password):
-    connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM users WHERE name = %s", (username,))
-    user = cursor.fetchone()
-    cursor.close()
-    connection.close()
+def authenticate_user(email, password):
+    with get_db_cursor() as cursor:
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
 
+    print(user)
     if user and check_password_hash(user["hashed_password"], password):
         return user
     return None
@@ -84,13 +80,14 @@ def register():
         return jsonify({"error": "Username and password are required"}), 400
 
     hashed_password = generate_password_hash(password)
-    
+
+    print(user_id, email, username, password)
 
     with get_db_cursor() as cursor:
         cursor.execute(
-        "INSERT INTO users (user_id, email, name, hashed_password) VALUES (%s, %s, %s, %s)",
-        (user_id, email, username, hashed_password)
-    )
+            "INSERT INTO users (user_id, email, name, hashed_password) VALUES (%s, %s, %s, %s)",
+            (user_id, email, username, hashed_password)
+        )
 
 
     return jsonify({"message": "User registered successfully"}), 201
@@ -100,11 +97,10 @@ def register():
 @app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
-
-    username = data.get("username")
+    email = data.get("email")
     password = data.get("password")
 
-    user = authenticate_user(username, password)
+    user = authenticate_user(email, password)
 
     if not user:
         return jsonify({"error": "Invalid credentials"}), 401

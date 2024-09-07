@@ -27,7 +27,8 @@ def export_tables_to_tsv():
             with open(tsv_file_path, 'w', newline='', encoding='utf-8') as tsvfile:
                 writer = csv.writer(tsvfile, delimiter='\t')
                 writer.writerow(columns)  # ヘッダー行の書き込み
-                writer.writerows(rows)  # データ行の書き込み
+                formated_rows = [[row[column] for column in columns] for row in rows]
+                writer.writerows(formated_rows)  # データ行の書き込み
 
             print(f"Exported {table_name} to {tsv_file_path}")
 

@@ -14,8 +14,8 @@ services:
       - FRONTEND_ENV=development  # フロントエンドで必要な環境変数を指定
     volumes:
       - ./frontend_env:/frontend  # ローカルのコードをコンテナ内と同期
-    depends_on:
-      - backend  # フロントエンドはバックエンドに依存
+    # depends_on:
+    #   - backend  # フロントエンドはバックエンドに依存
 
   backend:
     build:
