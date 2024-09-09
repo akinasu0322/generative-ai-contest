@@ -9,6 +9,7 @@ def create_user_table():
             CREATE TABLE users (
                 user_id VARCHAR(26) PRIMARY KEY,
                 email VARCHAR(255) NOT NULL UNIQUE,
+                hashed_password VARCHAR(255) NOT NULL,
                 name VARCHAR(255) NOT NULL,
                 age INT,
                 sex ENUM('male', 'female', 'other'),
@@ -42,6 +43,7 @@ def create_hospital_table():
         cursor.execute("""
             CREATE TABLE hospitals (
                 hospital_id VARCHAR(26) PRIMARY KEY,
+                hashed_password VARCHAR(255) NOT NULL,
                 name VARCHAR(255) NOT NULL
             )
         """)
@@ -54,6 +56,7 @@ def create_doctor_table():
             CREATE TABLE doctors (
                 doctor_id VARCHAR(26) PRIMARY KEY,
                 email VARCHAR(255) NOT NULL UNIQUE,
+                hashed_password VARCHAR(255) NOT NULL,
                 name VARCHAR(255) NOT NULL,
                 age INT,
                 sex ENUM('male', 'female', 'other'),
@@ -139,7 +142,7 @@ def create_question_log_table():
                 chat_id VARCHAR(26),
                 question TEXT,
                 answer TEXT,
-                destination_trigger VARCHAR(255),
+                target_trigger VARCHAR(255),
                 created_time VARCHAR(13)
             )
         """)

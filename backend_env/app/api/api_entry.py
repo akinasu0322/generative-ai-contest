@@ -147,16 +147,24 @@ def login():
     if not user:
         return jsonify({"error": "Invalid credentials"}), 401
 
+    if role=="user":
+        user_id = user["user_id"]
+    elif role=="doctor":
+        user_id = user["doctor_id"]
+    else:
+        print(f"Error in login API. Invalid \"role\"={role}")
+        exit(0)
+
     token = jwt.encode(
         {
-            "user_id": user["user_id"],
+            "user_id": user_id,
             "exp": datetime.now(TIME_ZONE) + timedelta(hours=TIMEOUT_HOUR)
         },
         app.config["SECRET_KEY"],
         algorithm="HS256"
     )
 
-    return jsonify({"jwt_token": token}), 200
+    return jsonify({"jwt_token": token, "user_id": user_id}), 200
 
 # 担当患者の追加
 @app.route("/register_in_charge_user", methods=["POST"])
@@ -248,7 +256,7 @@ def get_user_info(current_user):
         records = cursor.fetchall()
 
     if not records:
-        return jsonify({"error": "No records found"}), 404
+        return jsonify([]), 200
 
     record_list = []
     for record in records:
@@ -306,7 +314,10 @@ def get_user_info(current_user):
 def start_chat(current_user):
     chat_id = str(ULID())
     record_id = str(ULID())
-    created_time = datetime.now(TIME_ZONE).strftime('%Y-%m-%d-%H')
+    data = request.get_json()
+    print(data)
+    call_time = data.get('call_time')
+    created_time = datetime.now(TIME_ZONE).strftime('%Y-%m-%d-%H') if call_time=='0000-00-00-00' else call_time
 
     with get_db_cursor() as cursor:
         cursor.execute("""
@@ -332,14 +343,15 @@ def gen_question(current_user):
     data = request.get_json()
     chat_id = data.get("chat_id")
     question_id = str(ULID())
-    question = f"本日、頭痛の症状はどうでしたか？"
+    question = f"本日、頭痛の症状はどうでしたか？" # backend側で生成
+    target_trigger = f"headache_intensity" # backend側で決定
 
     with get_db_cursor() as cursor:
         cursor.execute("""
-            INSERT INTO questions (question_id, chat_id, question, created_time) 
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO questions (question_id, chat_id, question, target_trigger, created_time) 
+            VALUES (%s, %s, %s, %s, %s)
             """, 
-            (question_id, chat_id, question, datetime.now(TIME_ZONE).strftime('%Y-%m-%d-%H'))
+            (question_id, chat_id, question, target_trigger, datetime.now(TIME_ZONE).strftime('%Y-%m-%d-%H'))
         )
 
     return jsonify({"question": question, "question_id": question_id}), 200
@@ -396,6 +408,7 @@ def gen_summary(current_user):
 
 
 # Mibs4とHit6の結果を記録
+# TODO: 任意のアンケートの記録をできるようにする。現状mibs4とhit6にしか対応していない。
 @app.route("/post_questionnaire_result", methods=["POST"])
 @token_required
 def post_questionnaire_result(current_user):
@@ -405,20 +418,26 @@ def post_questionnaire_result(current_user):
 
     if questionnaire_title == "mibs4":
         table = "mibs4"
+        query = """
+            INSERT INTO mibs4 (user_id, created_time, question1, question2, question3, question4) 
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """
+        params = (current_user, datetime.now(TIME_ZONE).strftime('%Y-%m-%d-%H'), *answers)
     elif questionnaire_title == "hit6":
         table = "hit6"
+        query = """
+            INSERT INTO hit6 (user_id, created_time, question1, question2, question3, question4, question5, question6) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        params = (current_user, datetime.now(TIME_ZONE).strftime('%Y-%m-%d-%H'), *answers)
     else:
         return jsonify({"error": "Invalid questionnaire title"}), 400
 
     with get_db_cursor() as cursor:
-        cursor.execute(f"""
-            INSERT INTO {table} (user_id, created_time, question1, question2, question3, question4) 
-            VALUES (%s, %s, %s, %s, %s, %s)
-            """, 
-            (current_user, datetime.now(TIME_ZONE).strftime('%Y-%m-%d-%H'), *answers)
-        )
+        cursor.execute(query, params)
 
     return jsonify({"message": "Questionnaire result recorded successfully"}), 201
+
 
 
 # アンケートの回答を取得
