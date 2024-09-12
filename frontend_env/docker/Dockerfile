@@ -1,10 +1,10 @@
 FROM python:3.9-slim
 
 # 作業ディレクトリの設定
-WORKDIR /app
+WORKDIR /frontend
 
 # 必要なファイルをコピー
-COPY . /app
+COPY . /frontend
 
 # 必要なシステムコマンドのインストール
 RUN apt-get update && apt-get install -y \
@@ -16,5 +16,5 @@ RUN apt-get update && apt-get install -y \
 
 
 # 必要なPythonライブラリをインストール
-RUN pip install --no-cache-dir -r /app/docker/requirements.txt
+RUN pip install --no-cache-dir -r /frontend/docker/requirements.txt
 

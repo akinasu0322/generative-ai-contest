@@ -9,7 +9,7 @@ services:
       - "3000:3000"  # フロントエンドアプリが3000番ポートで動作する場合
     env_file:
       - ./.env
-      - ./envs/backend.env
+      - ./envs/frontend.env
     environment:
       - FRONTEND_ENV=development  # フロントエンドで必要な環境変数を指定
     volumes:
