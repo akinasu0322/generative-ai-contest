@@ -1,21 +1,14 @@
 # 必要なモジュールをインポート
 import requests # HTTP通信の機能
 import json # JSONデータの操作機能
-from datetime import datetime # 日付に関する機能
-from zoneinfo import ZoneInfo # タイムゾーンを扱う機能
-from dotenv import load_dotenv # 環境変数を読み込む機能
 import os # OSに関する機能
-from tenacity import retry
 from app.cotomi_sandbox.questions.question import questions
 
-# KEYはAPIキー.
-load_dotenv()
 KEY = os.getenv("COTOMI_API_KEY")
 # 使用するモデル名.
 MODEL = "cotomi-core-pro-v1.0-awq"
 
 # 一般対話を行う関数. ストリーミングはオフ
-# @retry()
 def normal_chat(
     user_content, # ユーザプロンプト.
     system_content="あなたはAIアシスタントです。", # システムプロンプト.
